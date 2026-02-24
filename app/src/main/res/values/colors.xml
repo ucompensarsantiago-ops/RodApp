@@ -2,4 +2,21 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="color_bienvenidaText">#FBF8F8</color>
+    <color name="splash_background_color">#7289cd</color>
+    <color name="onboarding_background_color">#7289cd</color>
+    <color name="onboarding_text_color">#0d0d0d</color>
+    <color name="onboarding_button_background_color">#FBF8F8</color>
+    <color name="onboarding_button_text_color">#000000</color>
+    <color name="register_text_color">#00FFFF</color>
+    <color name="login_background_color">#7289cd</color>
+    <color name="login_text_color">#0d0d0d</color>
+    <color name="login_input_background_color">#FBF8F8</color>
+    <color name="login_button_background_color">#FBF8F8</color>
+    <color name="login_button_text_color">#000000</color>
+    <color name="recover_password_text_color">#00FFFF</color>
+    <color name="google_button_background_color">#FBF8F8</color>
+    <color name="google_button_text_color">#000000</color>
+    <color name="no_account_text_color">#FBF8F8</color>
+    <color name="register_link_text_color">#00FFFF</color>
 </resources>

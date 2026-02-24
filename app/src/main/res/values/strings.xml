@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">RodApp</string>
+    <string name="mensaje_bienvenida">RodApp</string>
+    <string name="name_background">Developer: Jose Santiago Martinez</string>
+    <string name="onboarding_message">Inicia una nueva aventura con RodApp y descubre una nueva forma de ver el mundo</string>
+    <string name="start_button">Comienza</string>
+    <string name="register">Registrate</string>
+    <string name="login_message">La aventura está por iniciar, por favor inicia sesión</string>
+    <string name="login_button">Ingresar</string>
+    <string name="recover_password">Recupera Tu Contraseña</string>
+    <string name="google_signin">Ingresa con Google</string>
+    <string name="no_account">No tienes cuenta?</string>
+    <string name="login_username_hint">Username</string>
+    <string name="login_password_hint">Password</string>
 </resources>
