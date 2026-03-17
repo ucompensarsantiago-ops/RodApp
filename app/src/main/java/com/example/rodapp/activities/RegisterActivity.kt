@@ -9,22 +9,24 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.rodapp.R
 
-class LoginActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_login)
-        
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        setContentView(R.layout.activity_register)
+
+        // Configuración de insets para manejar el diseño de borde a borde
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val textViewRegisterLink = findViewById<TextView>(R.id.textViewRegisterLink)
-        textViewRegisterLink.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
+        val textViewLoginLink = findViewById<TextView>(R.id.textViewLoginLink)
+        textViewLoginLink.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }
