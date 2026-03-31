@@ -12,8 +12,10 @@ import com.example.rodapp.R
 import com.example.rodapp.databinding.ActivityMainBinding
 import com.example.rodapp.main.admin.AdminFragment
 import com.example.rodapp.main.perfil.PerfilFragment
+import com.example.rodapp.main.productos.CarritoFragment
 import com.example.rodapp.main.productos.CatalogoFragment
 import com.example.rodapp.main.productos.HomeFragment
+import com.example.rodapp.main.productos.fragment_favoritos
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,8 +59,8 @@ class MainActivity : AppCompatActivity() {
             val fragment = when (item.itemId) {
                 R.id.nav_home -> HomeFragment()
                 R.id.nav_catalogo -> CatalogoFragment()
-                R.id.nav_perfil -> PerfilFragment()
-                R.id.nav_admin -> AdminFragment()
+                R.id.nav_favoritos -> fragment_favoritos()
+                R.id.nav_carrito -> CarritoFragment()
                 else -> null
             }
 
@@ -76,15 +78,30 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_logout -> {
                     finish()
                 }
+                R.id.nav_perfil -> {
+                    replaceFragment(PerfilFragment())
+                    uncheckBottomNav()
+                }
+                R.id.nav_admin -> {
+                    replaceFragment(AdminFragment())
+                    uncheckBottomNav()
+                }
                 else -> {
-                    // Al cambiar el selectedItemId del BottomNav, se dispara su listener de arriba
-                    // Esto evita duplicar la lógica de replaceFragment y mantiene sincronía
+                    // Para Home, Catalogo, Favoritos y Carrito, usamos la sincronía con el BottomNav
                     binding.bottomNav.selectedItemId = item.itemId
                 }
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+    }
+
+    private fun uncheckBottomNav() {
+        binding.bottomNav.menu.setGroupCheckable(0, true, false)
+        for (i in 0 until binding.bottomNav.menu.size()) {
+            binding.bottomNav.menu.getItem(i).isChecked = false
+        }
+        binding.bottomNav.menu.setGroupCheckable(0, true, true)
     }
 
     private fun replaceFragment(fragment: Fragment) {
