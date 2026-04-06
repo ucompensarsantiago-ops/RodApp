@@ -22,4 +22,24 @@
     <string name="register_button">Registrarse</string>
     <string name="already_have_account">¿Ya tienes cuenta?</string>
     <string name="login_link">Inicia Sesión</string>
+
+    <!-- UI/Navigation Strings -->
+    <string name="inicio">Inicio</string>
+    <string name="catalogo">Catálogo</string>
+    <string name="carrito">Carrito</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="perfil">Perfil</string>
+    <string name="admin">Administrador</string>
+    <string name="usuario">Usuario</string>
+    <string name="cerrar_sesion">Cerrar Sesión</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="catalogomessage">Catalogo</string>
+    <string name="adminmessage">Admin</string>
+    <string name="catalogomessage1">Catalogo</string>
+    <string name="iniciomessage">Productos destacados</string>
+    <string name="perfilmessage">Perfil</string>
+    <string name="usuariomessage">Usuario</string>
+    <string name="favoritosmessage">Favoritos</string>
+    <string name="comprar">Agregar al carrito</string>
 </resources>
