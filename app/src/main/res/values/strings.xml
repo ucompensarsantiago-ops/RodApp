@@ -10,7 +10,7 @@
     <string name="recover_password">Recupera Tu Contraseña</string>
     <string name="google_signin">Ingresa con Google</string>
     <string name="no_account">No tienes cuenta?</string>
-    <string name="login_username_hint">Username</string>
+    <string name="login_username_hint">Email</string>
     <string name="login_password_hint">Password</string>
 
     <!-- Registration Strings -->

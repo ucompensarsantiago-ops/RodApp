@@ -69,10 +69,10 @@
                     android:id="@+id/editTextUsername"
                     android:layout_width="match_parent"
                     android:layout_height="47dp"
-                    android:autofillHints="username"
+                    android:autofillHints="emailAddress"
                     android:background="@color/login_input_background_color"
                     android:hint="@string/login_username_hint"
-                    android:inputType="text"
+                    android:inputType="textEmailAddress"
                     android:padding="12dp" />
 
                 <EditText

@@ -1,14 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/login_background_color"
     tools:context=".main.perfil.PerfilFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/perfilmessage" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Editar Perfil"
+            android:textColor="@color/login_text_color"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Nombres"
+            android:textColor="@color/login_text_color" />
+
+        <EditText
+            android:id="@+id/editTextProfileName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/login_input_background_color"
+            android:hint="Nombres"
+            android:inputType="textPersonName"
+            android:padding="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Apellidos"
+            android:textColor="@color/login_text_color" />
+
+        <EditText
+            android:id="@+id/editTextProfileLastName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/login_input_background_color"
+            android:hint="Apellidos"
+            android:inputType="textPersonName"
+            android:padding="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Correo Electrónico"
+            android:textColor="@color/login_text_color" />
+
+        <EditText
+            android:id="@+id/editTextProfileEmail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/login_input_background_color"
+            android:hint="Correo"
+            android:inputType="textEmailAddress"
+            android:padding="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Nueva Contraseña (opcional)"
+            android:textColor="@color/login_text_color" />
+
+        <EditText
+            android:id="@+id/editTextProfilePassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/login_input_background_color"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:padding="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Confirmar Contraseña"
+            android:textColor="@color/login_text_color" />
+
+        <EditText
+            android:id="@+id/editTextProfileConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/login_input_background_color"
+            android:hint="Re-contraseña"
+            android:inputType="textPassword"
+            android:padding="12dp" />
+
+        <Button
+            android:id="@+id/buttonSaveProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="@color/login_button_background_color"
+            android:text="Guardar Cambios"
+            android:textColor="@color/login_button_text_color" />
+
+    </LinearLayout>
+</ScrollView>
