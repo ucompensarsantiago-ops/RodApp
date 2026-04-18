@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.rodapp.R
+import com.example.rodapp.SecurityManager
 import com.example.rodapp.SupabaseClient
 import com.example.rodapp.activities.UserProfile
 import io.github.jan.supabase.auth.auth
@@ -25,6 +28,9 @@ class PerfilFragment : Fragment() {
     private lateinit var editTextPassword: EditText
     private lateinit var editTextConfirmPassword: EditText
     private lateinit var buttonSave: Button
+    private lateinit var layoutBiometric: LinearLayout
+    private lateinit var switchBiometric: SwitchCompat
+    private var isInternalChange = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +45,11 @@ class PerfilFragment : Fragment() {
         editTextPassword = view.findViewById(R.id.editTextProfilePassword)
         editTextConfirmPassword = view.findViewById(R.id.editTextProfileConfirmPassword)
         buttonSave = view.findViewById(R.id.buttonSaveProfile)
+        layoutBiometric = view.findViewById(R.id.layoutBiometricToggle)
+        switchBiometric = view.findViewById(R.id.switchBiometric)
+
+        // Configurar biometría
+        setupBiometricUI()
 
         // Cargar datos actuales
         loadUserProfile()
@@ -48,6 +59,60 @@ class PerfilFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun setupBiometricUI() {
+        if (SecurityManager.isBiometricAvailable(requireContext())) {
+            layoutBiometric.visibility = View.VISIBLE
+            
+            isInternalChange = true
+            switchBiometric.isChecked = SecurityManager.isBiometricEnabled(requireContext())
+            isInternalChange = false
+            
+            switchBiometric.setOnCheckedChangeListener { _, isChecked ->
+                if (isInternalChange) return@setOnCheckedChangeListener
+                
+                if (isChecked) {
+                    // Para habilitar, pedimos confirmación con huella y guardamos credenciales actuales
+                    SecurityManager.showBiometricPrompt(
+                        activity = requireActivity(),
+                        title = "Habilitar Acceso",
+                        onSuccess = {
+                            val email = editTextEmail.text.toString()
+                            val password = editTextPassword.text.toString()
+                            
+                            if (password.isNotEmpty()) {
+                                SecurityManager.saveCredentials(requireContext(), email, password)
+                                SecurityManager.setBiometricEnabled(requireContext(), true)
+                                Toast.makeText(requireContext(), "Huella habilitada", Toast.LENGTH_SHORT).show()
+                            } else {
+                                // Si el campo está vacío, intentamos ver si ya hay una guardada o permitimos si es login social (sin password)
+                                val (_, savedPass) = SecurityManager.getCredentials(requireContext())
+                                if (savedPass != null) {
+                                    SecurityManager.setBiometricEnabled(requireContext(), true)
+                                    Toast.makeText(requireContext(), "Huella habilitada", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    // Para usuarios de Google/Social que no tienen password en el campo, 
+                                    // permitimos habilitar la huella solo con el email para "desbloquear" la app
+                                    SecurityManager.saveCredentials(requireContext(), email, null)
+                                    SecurityManager.setBiometricEnabled(requireContext(), true)
+                                    Toast.makeText(requireContext(), "Huella habilitada para acceso rápido", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        },
+                        onError = { error ->
+                            isInternalChange = true
+                            switchBiometric.isChecked = false
+                            isInternalChange = false
+                            Toast.makeText(requireContext(), "Error: $error", Toast.LENGTH_SHORT).show()
+                        }
+                    )
+                } else {
+                    SecurityManager.setBiometricEnabled(requireContext(), false)
+                    Toast.makeText(requireContext(), "Huella deshabilitada", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun loadUserProfile() {
@@ -131,7 +196,17 @@ class PerfilFragment : Fragment() {
                     SupabaseClient.client.auth.updateUser {
                         this.password = password
                     }
+                    // Actualizar credenciales guardadas para la huella si está activa
+                    if (SecurityManager.isBiometricEnabled(requireContext())) {
+                        SecurityManager.saveCredentials(requireContext(), email, password)
+                    }
                     Toast.makeText(requireContext(), "Contraseña actualizada", Toast.LENGTH_SHORT).show()
+                } else if (email != user.email && SecurityManager.isBiometricEnabled(requireContext())) {
+                    // Si cambió el email pero no el pass, también actualizamos credenciales guardadas
+                    val (_, savedPass) = SecurityManager.getCredentials(requireContext())
+                    if (savedPass != null) {
+                        SecurityManager.saveCredentials(requireContext(), email, savedPass)
+                    }
                 }
 
                 Toast.makeText(requireContext(), "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show()

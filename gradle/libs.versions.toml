@@ -13,6 +13,8 @@ lifecycleRuntimeKtx = "2.8.7"
 supabase = "3.1.4"
 ktor = "3.1.3"
 serialization = "1.6.3"
+biometric = "1.1.0"
+securityCrypto = "1.1.0"
 
 
 [libraries]
@@ -31,6 +33,8 @@ supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt" }
 ktor-bom = { module = "io.ktor:ktor-bom", version.ref = "ktor" }
 ktor-client-android = { module = "io.ktor:ktor-client-android" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometric" }
+androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
 
 
 [plugins]

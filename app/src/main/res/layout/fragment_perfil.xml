@@ -108,6 +108,31 @@
             android:inputType="textPassword"
             android:padding="12dp" />
 
+        <LinearLayout
+            android:id="@+id/layoutBiometricToggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Habilitar huella digital"
+                android:textColor="@color/login_text_color"
+                android:textSize="16sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchBiometric"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:thumbTint="@color/login_button_background_color"
+                app:trackTint="@color/login_input_background_color" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/buttonSaveProfile"
             android:layout_width="match_parent"

@@ -14,7 +14,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.rodapp.R
 import com.example.rodapp.SupabaseClient
+import com.example.rodapp.main.MainActivity
 import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.handleDeeplinks
+import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.launch
@@ -36,9 +39,17 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var editTextPassword: EditText
     private lateinit var editTextConfirmPassword: EditText
     private lateinit var buttonRegister: Button
+    private lateinit var buttonGoogleSignIn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Aunque el redirect apunta a LoginActivity, es buena práctica manejarlo si RegisterActivity pudiera ser destino
+        SupabaseClient.client.handleDeeplinks(intent) {
+            startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+            finish()
+        }
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_register)
 
@@ -50,6 +61,7 @@ class RegisterActivity : AppCompatActivity() {
         editTextPassword = findViewById(R.id.editTextPassword)
         editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword)
         buttonRegister = findViewById(R.id.buttonRegister)
+        buttonGoogleSignIn = findViewById(R.id.buttonGoogleSignIn)
 
         // Configuración de insets para manejar el diseño de borde a borde
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
@@ -62,10 +74,33 @@ class RegisterActivity : AppCompatActivity() {
             performRegistration()
         }
 
+        buttonGoogleSignIn.setOnClickListener {
+            performGoogleLogin()
+        }
+
         textViewLoginLink.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        SupabaseClient.client.handleDeeplinks(intent) {
+            startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+            finish()
+        }
+    }
+
+    private fun performGoogleLogin() {
+        lifecycleScope.launch {
+            try {
+                SupabaseClient.client.auth.signInWith(Google, redirectUrl = "rodapp://login")
+            } catch (e: Exception) {
+                Toast.makeText(this@RegisterActivity, "Error al iniciar con Google: ${e.message}", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
         }
     }
 

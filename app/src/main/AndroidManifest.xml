@@ -29,8 +29,16 @@
             android:exported="false" />
         <activity
             android:name=".activities.LoginActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="rodapp" android:host="login" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.RegisterActivity"
             android:exported="false"

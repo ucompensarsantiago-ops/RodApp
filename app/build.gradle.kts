@@ -56,6 +56,8 @@ dependencies {
     implementation(platform(libs.ktor.bom))
     implementation(libs.ktor.client.android)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.biometric)
+    implementation(libs.androidx.security.crypto)
 
 
 

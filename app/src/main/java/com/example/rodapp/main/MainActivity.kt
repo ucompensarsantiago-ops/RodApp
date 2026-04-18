@@ -1,6 +1,8 @@
 package com.example.rodapp.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +10,10 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.rodapp.R
+import com.example.rodapp.SupabaseClient
+import com.example.rodapp.activities.LoginActivity
 import com.example.rodapp.databinding.ActivityMainBinding
 import com.example.rodapp.main.admin.AdminFragment
 import com.example.rodapp.main.perfil.PerfilFragment
@@ -16,6 +21,8 @@ import com.example.rodapp.main.productos.CarritoFragment
 import com.example.rodapp.main.productos.CatalogoFragment
 import com.example.rodapp.main.productos.HomeFragment
 import com.example.rodapp.main.productos.fragment_favoritos
+import io.github.jan.supabase.auth.auth
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,15 +35,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Ajuste para que el contenido no se solape con la barra de estado y de navegación
-        ViewCompat.setOnApplyWindowInsetsListener(binding.drawerLayout) { _, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.drawerLayout) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar.setPadding(0, systemBars.top, 0, 0)
+            
+            // Aplicamos margen superior a la toolbar en lugar de padding interno
+            val lp = binding.toolbar.layoutParams as android.view.ViewGroup.MarginLayoutParams
+            lp.topMargin = systemBars.top
+            binding.toolbar.layoutParams = lp
+
             binding.bottomNav.setPadding(0, 0, 0, systemBars.bottom)
             insets
         }
 
         setSupportActionBar(binding.toolbar)
-        // Quitar el título por defecto para usar el nuestro personalizado
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // Forzar que aparezca el botón home
+        supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         // Configuración del Drawer (Menú lateral)
@@ -44,6 +57,8 @@ class MainActivity : AppCompatActivity() {
             this, binding.drawerLayout, binding.toolbar,
             R.string.inicio, R.string.inicio
         )
+        // Tintar el icono de la hamburguesa de blanco para que sea visible
+        toggle.drawerArrowDrawable.color = resources.getColor(R.color.white, theme)
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -76,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_logout -> {
-                    finish()
+                    performLogout()
                 }
                 R.id.nav_perfil -> {
                     replaceFragment(PerfilFragment())
@@ -93,6 +108,19 @@ class MainActivity : AppCompatActivity() {
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
+        }
+    }
+
+    private fun performLogout() {
+        lifecycleScope.launch {
+            try {
+                SupabaseClient.client.auth.signOut()
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                finish()
+            } catch (e: Exception) {
+                Toast.makeText(this@MainActivity, "Error al cerrar sesión", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
         }
     }
 
