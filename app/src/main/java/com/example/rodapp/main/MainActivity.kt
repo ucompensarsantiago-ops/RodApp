@@ -2,6 +2,7 @@ package com.example.rodapp.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -11,6 +12,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.rodapp.R
 import com.example.rodapp.SupabaseClient
 import com.example.rodapp.activities.LoginActivity
@@ -21,7 +24,9 @@ import com.example.rodapp.main.productos.CarritoFragment
 import com.example.rodapp.main.productos.CatalogoFragment
 import com.example.rodapp.main.productos.HomeFragment
 import com.example.rodapp.main.productos.fragment_favoritos
+import com.example.rodapp.models.UserProfile
 import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -87,6 +92,8 @@ class MainActivity : AppCompatActivity() {
             } ?: false
         }
 
+        loadUserRoleAndConfigureMenu()
+
         // Listener para el Navigation Drawer (Menú lateral)
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -111,16 +118,49 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadUserRoleAndConfigureMenu() {
+        lifecycleScope.launch {
+            try {
+                val userId = SupabaseClient.client.auth.currentUserOrNull()?.id ?: return@launch
+                val profile = SupabaseClient.client.postgrest.from("users")
+                    .select { filter { eq("id", userId) } }
+                    .decodeList<UserProfile>().firstOrNull()
+                if (profile?.role == "admin") {
+                    binding.navView.menu.findItem(R.id.nav_admin)?.isVisible = true
+                }
+                refreshToolbarAvatar(profile?.urlPhoto)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun refreshToolbarAvatar(photoUrl: String? = null) {
+        val avatarView = binding.toolbar.findViewById<ImageView>(R.id.imageViewToolbarAvatar) ?: return
+        val url = photoUrl ?: SupabaseClient.client.auth.currentUserOrNull()?.let { null }
+        avatarView.load(url) {
+            transformations(CircleCropTransformation())
+            placeholder(R.drawable.ic_person_placeholder)
+            error(R.drawable.ic_person_placeholder)
+            fallback(R.drawable.ic_person_placeholder)
+        }
+        avatarView.setOnClickListener {
+            replaceFragment(PerfilFragment())
+            uncheckBottomNav()
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+    }
+
     private fun performLogout() {
         lifecycleScope.launch {
             try {
                 SupabaseClient.client.auth.signOut()
-                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                finish()
             } catch (e: Exception) {
-                Toast.makeText(this@MainActivity, "Error al cerrar sesión", Toast.LENGTH_SHORT).show()
+                // Si falla la conexión, igual limpiamos la sesión local
                 e.printStackTrace()
             }
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            finish()
         }
     }
 

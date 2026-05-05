@@ -15,7 +15,8 @@
     <item
         android:id="@+id/nav_admin"
         android:icon="@android:drawable/ic_lock_lock"
-        android:title="@string/admin" />
+        android:title="@string/admin"
+        android:visible="false" />
     <item
         android:id="@+id/nav_logout"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"

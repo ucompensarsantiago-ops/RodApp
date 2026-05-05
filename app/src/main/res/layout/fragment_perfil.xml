@@ -13,6 +13,77 @@
         android:orientation="vertical"
         android:padding="24dp">
 
+        <!-- Tarjeta de perfil -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/login_input_background_color"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Foto de perfil circular con botón de edición -->
+            <FrameLayout
+                android:id="@+id/frameLayoutProfilePhoto"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                <ImageView
+                    android:id="@+id/imageViewProfilePhoto"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/bg_profile_photo"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_person_placeholder"
+                    android:contentDescription="Foto de perfil" />
+
+                <!-- Overlay inferior con texto "Editar" -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_gravity="bottom"
+                    android:background="#AA000000"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Editar"
+                        android:textColor="#FFFFFF"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/textViewProfileFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/login_text_color"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:text="Juan García" />
+
+            <TextView
+                android:id="@+id/textViewProfileRole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/login_text_color"
+                android:textSize="14sp"
+                tools:text="Nivel de cuenta: Cliente" />
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

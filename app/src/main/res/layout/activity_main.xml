@@ -32,10 +32,19 @@
                     android:contentDescription="@null"
                     android:src="@mipmap/icons_round" />
 
+                <ImageView
+                    android:id="@+id/imageViewToolbarAvatar"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_person_placeholder"
+                    android:scaleType="centerCrop" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="8dp"
                     android:text="@string/app_name"
                     android:textColor="@color/white"
                     android:textSize="20sp"

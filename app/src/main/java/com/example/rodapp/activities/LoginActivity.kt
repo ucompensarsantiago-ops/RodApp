@@ -233,10 +233,18 @@ class LoginActivity : AppCompatActivity() {
                         performLogin()
                     } else {
                         // Flujo de Google: No hay contraseña guardada.
-                        // Simplemente entramos porque la sesión de Supabase ya está activa en el observer.
                         Log.d("SUPABASE_AUTH", "Acceso concedido por huella (Google)")
-                        isNavigating = true
-                        navigateToMain()
+                        if (SupabaseClient.client.auth.currentUserOrNull() != null) {
+                            isNavigating = true
+                            navigateToMain()
+                        } else {
+                            // La sesión expiró — pedir que vuelva a autenticarse con Google
+                            Toast.makeText(
+                                this,
+                                "Tu sesión ha expirado. Por favor inicia sesión con Google nuevamente.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 },
                 onError = { error ->

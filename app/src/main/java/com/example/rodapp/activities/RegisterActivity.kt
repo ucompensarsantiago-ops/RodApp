@@ -15,20 +15,13 @@ import androidx.lifecycle.lifecycleScope
 import com.example.rodapp.R
 import com.example.rodapp.SupabaseClient
 import com.example.rodapp.main.MainActivity
+import com.example.rodapp.models.UserProfile
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.handleDeeplinks
 import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class UserProfile(
-    val id: String,
-    val name: String,
-    val lastname: String
-)
 
 class RegisterActivity : AppCompatActivity() {
 
